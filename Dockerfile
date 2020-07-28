@@ -1,6 +1,9 @@
 FROM alpine
 MAINTAINER Kamran Azeem & Henrik Høegh (kaz@praqma.net, heh@praqma.net)
 
+ARG USER=appuser
+ENV HOME /home/$USER
+
 # Install some tools in the container.
 # Packages are listed in alphabetical order, for ease of readability and ease of maintenance.
 RUN     apk update \
@@ -11,6 +14,13 @@ RUN     apk update \
     &&  mkdir /certs \
     &&  chmod 700 /certs
 
+# add new user
+RUN adduser -D $USER \
+        && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
+        && chmod 0440 /etc/sudoers.d/$USER
+
+USER $USER
+WORKDIR $HOME
 
 # Interesting:
 # Users of this image may wonder, why this multitool runs a web server? 
