@@ -42,13 +42,13 @@ RUN adduser -D $USER \
 
 # # Copy a simple index.html to eliminate text (index.html) noise which comes with default nginx image.
 # # (I created an issue for this purpose here: https://github.com/nginxinc/docker-nginx/issues/234)
-# COPY index.html /usr/share/nginx/html/
+COPY index.html /usr/share/nginx/html/
 
 
 # # Copy a custom nginx.conf with log files redirected to stderr and stdout
-# COPY nginx.conf /etc/nginx/nginx.conf
-# COPY nginx-connectors.conf /etc/nginx/conf.d/default.conf
-# COPY server.* /certs/
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx-connectors.conf /etc/nginx/conf.d/default.conf
+COPY server.* /certs/
 
 # EXPOSE 80 443
 
