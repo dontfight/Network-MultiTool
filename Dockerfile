@@ -19,9 +19,6 @@ RUN adduser -D $USER \
         && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
         && chmod 0440 /etc/sudoers.d/$USER
 
-USER $USER
-WORKDIR $HOME
-
 # # Interesting:
 # # Users of this image may wonder, why this multitool runs a web server? 
 # # Well, normally, if a container does not run a daemon, 
@@ -52,13 +49,15 @@ COPY index.html /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx-connectors.conf /etc/nginx/conf.d/default.conf
 COPY server.* /certs/
-RUN chmod a+w /etc/nginx/nginx.conf
-RUN chmod a+w /etc/nginx/conf.d/default.conf
+RUN chmod 777 /etc/nginx/nginx.conf
+RUN chmod 777 /etc/nginx/conf.d/default.conf
 RUN chmod -R 777 /certs/
 EXPOSE 80 443
 
 COPY docker-entrypoint.sh /
 
+USER $USER
+WORKDIR $HOME
 
 # # Run the startup script as ENTRYPOINT, which does few things and then starts nginx.
 ENTRYPOINT ["/docker-entrypoint.sh"]
@@ -66,12 +65,8 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # # Start nginx in foreground:
 CMD ["nginx", "-g", "daemon off;"]
-
-
-USER $USER
-WORKDIR $HOME
-
 # CMD ["tail", "-f", "/dev/null"]
+
 ###################################################################################################
 
 # Build and Push (to dockerhub) instructions:
