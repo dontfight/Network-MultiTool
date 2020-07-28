@@ -19,6 +19,9 @@ RUN adduser -D $USER \
         && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
         && chmod 0440 /etc/sudoers.d/$USER
 
+USER $USER
+WORKDIR $HOME
+
 # # Interesting:
 # # Users of this image may wonder, why this multitool runs a web server? 
 # # Well, normally, if a container does not run a daemon, 
@@ -62,13 +65,13 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 
 # # Start nginx in foreground:
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
 
 
 USER $USER
 WORKDIR $HOME
 
-CMD ["tail", "-f", "/dev/null"]
+# CMD ["tail", "-f", "/dev/null"]
 ###################################################################################################
 
 # Build and Push (to dockerhub) instructions:
