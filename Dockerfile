@@ -49,7 +49,9 @@ COPY index.html /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx-connectors.conf /etc/nginx/conf.d/default.conf
 COPY server.* /certs/
-
+RUN chmod a+w /etc/nginx/nginx.conf
+RUN chmod a+w /etc/nginx/conf.d/default.conf
+RUN chmod -R 777 /certs/
 EXPOSE 80 443
 
 COPY docker-entrypoint.sh /
