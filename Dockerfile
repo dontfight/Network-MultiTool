@@ -50,13 +50,13 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx-connectors.conf /etc/nginx/conf.d/default.conf
 COPY server.* /certs/
 
-# EXPOSE 80 443
+EXPOSE 80 443
 
-# COPY docker-entrypoint.sh /
+COPY docker-entrypoint.sh /
 
 
 # # Run the startup script as ENTRYPOINT, which does few things and then starts nginx.
-# ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 
 # # Start nginx in foreground:
